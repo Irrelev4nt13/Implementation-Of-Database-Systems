@@ -1,14 +1,21 @@
 #ifndef HP_FILE_H
 #define HP_FILE_H
 #include <record.h>
-
-
-
+#include "bf.h"
 /* Η δομή HP_info κρατάει μεταδεδομένα που σχετίζονται με το αρχείο σωρού*/
-typedef struct {
-    // Να το συμπληρώσετε
+typedef struct
+{
+    int fileDesc;
+    int last_id;
+    int max;
+    BF_Block *located;
 } HP_info;
 
+typedef struct
+{
+    int block_num;
+    BF_Block *next;
+} HP_block_info;
 /*Η συνάρτηση HP_CreateFile χρησιμοποιείται για τη δημιουργία και
 κατάλληλη αρχικοποίηση ενός άδειου αρχείου σωρού με όνομα fileName.
 Σε περίπτωση που εκτελεστεί επιτυχώς, επιστρέφεται 0, ενώ σε
@@ -22,9 +29,7 @@ int HP_CreateFile(
 αναγκαίες για το αρχείο αυτό προκειμένου να μπορείτε να επεξεργαστείτε
 στη συνέχεια τις εγγραφές του.
 */
-HP_info* HP_OpenFile( char *fileName /* όνομα αρχείου */ );
-
-
+HP_info *HP_OpenFile(char *fileName /* όνομα αρχείου */);
 
 /* Η συνάρτηση HP_CloseFile κλείνει το αρχείο που προσδιορίζεται
 μέσα στη δομή header_info. Σε περίπτωση που εκτελεστεί επιτυχώς,
@@ -33,7 +38,7 @@ HP_info* HP_OpenFile( char *fileName /* όνομα αρχείου */ );
 που περάστηκε ως παράμετρος, στην περίπτωση που το κλείσιμο
 πραγματοποιήθηκε επιτυχώς.
 */
-int HP_CloseFile( HP_info* header_info );
+int HP_CloseFile(HP_info *header_info);
 
 /* Η συνάρτηση HP_InsertEntry χρησιμοποιείται για την εισαγωγή μιας
 εγγραφής στο αρχείο σωρού. Οι πληροφορίες που αφορούν το αρχείο
@@ -43,8 +48,8 @@ int HP_CloseFile( HP_info* header_info );
 (blockId) , ενώ σε διαφορετική περίπτωση -1.
 */
 int HP_InsertEntry(
-    HP_info* header_info, /* επικεφαλίδα του αρχείου*/
-    Record record /* δομή που προσδιορίζει την εγγραφή */ );
+    HP_info *header_info, /* επικεφαλίδα του αρχείου*/
+    Record record /* δομή που προσδιορίζει την εγγραφή */);
 
 /*Η συνάρτηση αυτή χρησιμοποιείται για την εκτύπωση όλων των εγγραφών
 που υπάρχουν στο αρχείο κατακερματισμού οι οποίες έχουν τιμή στο
@@ -57,8 +62,7 @@ int HP_InsertEntry(
 επιστρέφει το πλήθος των blocks που διαβάστηκαν, ενώ σε περίπτωση λάθους επιστρέφει -1.
 */
 int HP_GetAllEntries(
-    HP_info* header_info, /* επικεφαλίδα του αρχείου*/
+    HP_info *header_info, /* επικεφαλίδα του αρχείου*/
     int id /* η τιμή id της εγγραφής στην οποία πραγματοποιείται η αναζήτηση*/);
-
 
 #endif // HP_FILE_H
