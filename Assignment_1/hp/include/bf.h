@@ -30,7 +30,7 @@ typedef enum ReplacementAlgorithm {
 // Δομή Block
 typedef struct BF_Block BF_Block;
 
-/**
+/*
  * Η συνάρτηση BF_Block_Init αρχικοποιεί και δεσμεύει την κατάλληλη μνήμη
  * για την δομή BF_BLOCK.
  */

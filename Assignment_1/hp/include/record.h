@@ -1,6 +1,9 @@
 #ifndef RECORD_H
 #define RECORD_H
 
+
+
+
 typedef enum Record_Attribute {
   ID,
   NAME,
