@@ -17,7 +17,6 @@ typedef struct Record
   char surname[20];
   char city[20];
 } Record;
-char city[20];
 Record randomRecord();
 
 void printRecord(Record record);

@@ -54,7 +54,7 @@ void BF_Block_SetDirty(BF_Block *block);
 /*
  * Η συνάρτηση BF_Βlock_GetData επιστρέφει ένα δείκτη στα δεδομένα του Block.
  * Άμα αλάξουμε τα δεδομένα θα πρέπει να κάνουμε το block dirty με την κλήση
- * της συνάρτησης BF_Block_GetData.
+ * της συνάρτησης BF_Block_GetData.**
  */
 char* BF_Block_GetData(const BF_Block *block);
 
