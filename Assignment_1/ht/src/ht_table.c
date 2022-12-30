@@ -33,7 +33,7 @@ int HT_InsertEntry(HT_info* ht_info, Record record) {
   return 0;
 }
 
-int HT_GetAllEntries(HT_info* ht_info, void* value ) {
+int HT_GetAllEntries(HT_info* ht_info, int value ) {
   return 0;
 }
 
