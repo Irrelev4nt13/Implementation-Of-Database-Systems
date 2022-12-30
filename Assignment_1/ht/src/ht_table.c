@@ -16,25 +16,25 @@
   }
 
 
-int HT_CreateFile(char *fileName,  int buckets){
-    return 0;
+int HT_CreateFile(char* fileName,  int buckets) {
+  return 0;
 }
 
-HT_info* HT_OpenFile(char *fileName){
-    return NULL;
+HT_info* HT_OpenFile(char *fileName) {
+  return NULL;
 }
 
 
-int HT_CloseFile( HT_info* HT_info ){
-    return 0;
+int HT_CloseFile( HT_info* HT_info ) {
+  return 0;
 }
 
-int HT_InsertEntry(HT_info* ht_info, Record record){
-    return 0;
+int HT_InsertEntry(HT_info* ht_info, Record record) {
+  return 0;
 }
 
-int HT_GetAllEntries(HT_info* ht_info, void *value ){
-    return 0;
+int HT_GetAllEntries(HT_info* ht_info, void* value ) {
+  return 0;
 }
 
 

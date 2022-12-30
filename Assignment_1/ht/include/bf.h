@@ -125,9 +125,7 @@ BF_ErrorCode BF_AllocateBlock(const int file_desc, BF_Block *block);
  * αποτυχίας, επιστρέφεται ένας κωδικός λάθους. Αν θέλετε να δείτε το είδος του
  * λάθους μπορείτε να καλέσετε τη συνάρτηση BF_PrintError.
  */
-BF_ErrorCode BF_GetBlock(const int file_desc,
-                         const int block_num,
-                         BF_Block *block);
+BF_ErrorCode BF_GetBlock(const int file_desc, const int block_num, BF_Block *block);
 
 /*
  * Η συνάρτηση BF_UnpinBlock αποδεσμεύει το block από το επίπεδο Block το
