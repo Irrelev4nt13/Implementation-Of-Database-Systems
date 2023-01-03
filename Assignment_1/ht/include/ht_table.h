@@ -5,12 +5,15 @@
 
 
 
-typedef struct {
-    // Να το συμπληρώσετε
+typedef struct { // Να το συμπληρώσετε
+    int fileDesc;   /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */ 
+    long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
+    int headerBlock;
 } HT_info;
 
-typedef struct {
-    // Να το συμπληρώσετε
+typedef struct { // Να το συμπληρώσετε
+    long int numRecords;    /* ο αριθμός των εγγραφών στο συγκεκριμένο block */
+    BF_Block* nextBF_Block; /* δείκτης στο επόμενο block δεδομένων */
 } HT_block_info;
 
 /*Η συνάρτηση HT_CreateFile χρησιμοποιείται για τη δημιουργία
