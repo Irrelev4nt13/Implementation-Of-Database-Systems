@@ -5,18 +5,15 @@
 #include "../include/bf.h"
 #include "../include/hp_file.h"
 
-#define RECORDS_NUM 10 // you can change it if you want
+#define RECORDS_NUM 13 // you can change it if you want
 #define FILE_NAME "data.db"
 
 int main()
 {
   CALL_BF(BF_Init(LRU));
 
-  // printf("asd");
-  // return EXIT_FAILURE;
   CALL_BF(HP_CreateFile(FILE_NAME));
   HP_info *info = HP_OpenFile(FILE_NAME);
-
   Record record;
   srand(12569874);
   int r;
@@ -26,11 +23,10 @@ int main()
     record = randomRecord();
     HP_InsertEntry(info, record);
   }
-
   // printf("RUN PrintAllEntries\n");
   // int id = rand() % RECORDS_NUM;
   // printf("\nSearching for: %d", id);
-  // HP_GetAllEntries(info, 1);
+  // printf("%d\n", HP_GetAllEntries(info, 11));
   // HP_GetAllEntries(info, 2);
 
   HP_CloseFile(info);
