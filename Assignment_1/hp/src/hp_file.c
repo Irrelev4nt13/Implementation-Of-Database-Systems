@@ -23,7 +23,6 @@ int HP_CreateFile(char *fileName)
   info->max = (BF_BLOCK_SIZE - sizeof(HP_block_info)) / sizeof(Record);
   info->last_id = 0;
   BF_Block_SetDirty(block);
-  // BF_UnpinBlock(block);
   BF_Block_Destroy(&block);
   return BF_OK;
 }
@@ -40,31 +39,12 @@ HP_info *HP_OpenFile(char *fileName)
   data = BF_Block_GetData(block);
   HP_info *info = data;
 
-  // int k;
-  // CALL_BF(BF_GetBlockCounter(fd1, &k));
-  // printf("block counter= %d\n", k);
-
-  // BF_UnpinBlock(block);
   BF_Block_Destroy(&block);
   return info;
 }
 
 int HP_CloseFile(HP_info *hp_info)
 {
-  // free(hp_info);
-  // BF_Block *block;
-  // void *data;
-  // int block_num, counter = -1;
-  // CALL_BF(BF_GetBlockCounter(hp_info->fileDesc, &block_num));
-  // BF_Block_Init(&block);
-  // for (int i = 1; i < block_num - 1; i++)
-  // {
-  //   CALL_BF(BF_GetBlock(hp_info->fileDesc, 1, block));
-  //   data = BF_Block_GetData(block);
-  //   HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
-  //   free(block);
-  // }
-  // BF_Block_Destroy(&block);
   CALL_BF(BF_CloseFile(hp_info->fileDesc));
   BF_UnpinBlock(hp_info->located);
   return 0;
@@ -88,7 +68,6 @@ int HP_InsertEntry(HP_info *hp_info, Record record)
       /* Add to an existing block which is not full */
       Record *rec = data;
       memcpy(&rec[blinfo->rec_num], &record, sizeof(Record));
-      // rec[blinfo->rec_num] = record;
       blinfo->rec_num++;
       BF_Block_SetDirty(block);
       CALL_BF(BF_UnpinBlock(block));
@@ -96,15 +75,12 @@ int HP_InsertEntry(HP_info *hp_info, Record record)
       return 0;
     }
   }
-  printf("%d\n", record.id);
   /* Make a new block either because we have 0 either because the others are full */
-  // printf("%p  %p\n", block, hp_info->located);
   CALL_BF(BF_AllocateBlock(hp_info->fileDesc, block));
   data = BF_Block_GetData(block);
   HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
   Record *rec = data;
   memcpy(&rec[0], &record, sizeof(Record));
-  // rec[0] = record;
   blinfo->rec_num = 1;
   hp_info->last_id = block_num;
   BF_Block_SetDirty(block);
@@ -128,10 +104,9 @@ int HP_GetAllEntries(HP_info *hp_info, int value)
     for (int j = 0; j < blinfo->rec_num; j++)
     {
       Record *rec = data;
-      printRecord(rec[j]);
       if (value == rec[j].id)
       {
-        // printRecord(rec[j]);
+        printRecord(rec[j]);
         counter = i;
       }
     }

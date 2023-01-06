@@ -23,13 +23,13 @@ int main()
     record = randomRecord();
     HP_InsertEntry(info, record);
     if (id == 4)
-      printf("%ld\n", sizeof(record));
+      HP_InsertEntry(info, record);
   }
-  // printf("RUN PrintAllEntries\n");
+  printf("RUN PrintAllEntries\n");
   int id = rand() % RECORDS_NUM;
-  printf("\nSearching for: %d", id);
-  printf("%d\n", HP_GetAllEntries(info, 4));
-  // HP_GetAllEntries(info, 2);
+  printf("\nSearching for: %d\n", id);
+  printf("%d\n", HP_GetAllEntries(info, id));
+  HP_GetAllEntries(info, 4);
 
   HP_CloseFile(info);
   free(info);
