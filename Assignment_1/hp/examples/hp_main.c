@@ -5,7 +5,7 @@
 #include "../include/bf.h"
 #include "../include/hp_file.h"
 
-#define RECORDS_NUM 13 // you can change it if you want
+#define RECORDS_NUM 11 // you can change it if you want
 #define FILE_NAME "data.db"
 
 int main()
@@ -22,13 +22,16 @@ int main()
   {
     record = randomRecord();
     HP_InsertEntry(info, record);
+    if (id == 4)
+      printf("%ld\n", sizeof(record));
   }
   // printf("RUN PrintAllEntries\n");
-  // int id = rand() % RECORDS_NUM;
-  // printf("\nSearching for: %d", id);
-  // printf("%d\n", HP_GetAllEntries(info, 11));
+  int id = rand() % RECORDS_NUM;
+  printf("\nSearching for: %d", id);
+  printf("%d\n", HP_GetAllEntries(info, 4));
   // HP_GetAllEntries(info, 2);
 
   HP_CloseFile(info);
+  free(info);
   BF_Close();
 }
