@@ -17,13 +17,12 @@ int main()
   Record record;
   srand(12569874);
   int r;
-  // printf("Insert Entries\n");
   for (int id = 0; id < RECORDS_NUM; ++id)
   {
     record = randomRecord();
     HP_InsertEntry(info, record);
-    if (id == 4)
-      HP_InsertEntry(info, record);
+    // if (id == 4)
+    //   HP_InsertEntry(info, record);
   }
   printf("RUN PrintAllEntries\n");
   int id = rand() % RECORDS_NUM;
@@ -32,6 +31,6 @@ int main()
   HP_GetAllEntries(info, 4);
 
   HP_CloseFile(info);
-  free(info);
+  // free(info);
   BF_Close();
 }

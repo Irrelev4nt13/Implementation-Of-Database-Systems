@@ -2,6 +2,7 @@
 #define HP_FILE_H
 #include <record.h>
 
+#include <stdbool.h>
 #define CALL_BF(call)         \
   {                           \
     BF_ErrorCode code = call; \
@@ -19,6 +20,8 @@ typedef struct
   int last_id;
   int max;
   BF_Block *located;
+  bool isHeapFile;
+  bool isHashFile;
 } HP_info;
 
 typedef struct

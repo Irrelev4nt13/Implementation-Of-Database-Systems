@@ -17,7 +17,12 @@ sht:
 run:
 	make clean
 	make hp
-	./build/hp_main data.db
+	./build/hp_main
+	
+leaks:
+	make clean
+	make hp
+	valgrind --leak-check=full -s --show-leak-kinds=all ./build/hp_main
 	
 clean:
 	rm ./build/hp_main data.db
