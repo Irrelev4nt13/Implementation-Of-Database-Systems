@@ -14,7 +14,7 @@ ht:
 run: ht
 	rm -f data.db
 	./build/ht_main
-valgrind: ht
+valgrind:
 	rm -f data.db
 	valgrind ./build/ht_main
 gdb:
