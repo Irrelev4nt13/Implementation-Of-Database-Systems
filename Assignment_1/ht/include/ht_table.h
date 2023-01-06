@@ -2,16 +2,23 @@
 #define HT_TABLE_H
 #include <record.h>
 
+#include <stdbool.h>
 
+#define MAX_NUM_BUCKETS 59
 
 typedef struct { // Να το συμπληρώσετε
     int fileDesc;   /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */ 
     long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
     int headerBlock;
+    long int numBlocks;
+    long int hashTable[MAX_NUM_BUCKETS];
+    bool isHeapFile;
+    bool isHashFile;
 } HT_info;
 
 typedef struct { // Να το συμπληρώσετε
     long int numRecords;    /* ο αριθμός των εγγραφών στο συγκεκριμένο block */
+    long int maxRecords;
     int nextBF_Block; /* δείκτης στο επόμενο block δεδομένων */
 } HT_block_info;
 
