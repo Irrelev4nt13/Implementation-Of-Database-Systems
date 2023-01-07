@@ -2,25 +2,29 @@
 #define HT_TABLE_H
 #include <record.h>
 
-#include <stdbool.h>
-
 #define MAX_NUM_BUCKETS 59
 
 typedef struct
 {      
-    char type_file;                  // Να το συμπληρώσετε
-    int fileDesc;        /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */
-    long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
-    int headerBlock;
-    long int numBlocks;
-    long int hashTable[20];
+    char type_file; // Store a character accordingly to the file's type, t-> hash, p->heap, s->sht
+    int fileDesc;   // file descriptor
+    long int numBuckets; // the number of buckets in the hash table
+    int headerBlock; // the id of the header block
+    long int numBlocks; // the total number of blocks used by hash table
+    long int hashTable[20]; // the hash table 
+    //########################################################################
+    //                                                                       #
+    //  With this number it can only work for 20 buckets                     #
+    // You can increase, but be careful because the block has limited space  #
+    //                                                                       #
+    //########################################################################
 } HT_info;
 
 typedef struct
-{                        // Να το συμπληρώσετε
-    long int numRecords; /* ο αριθμός των εγγραφών στο συγκεκριμένο block */
-    long int maxRecords;
-    int nextBF_Block; /* δείκτης στο επόμενο block δεδομένων */
+{
+    long int numRecords; // The total number of records in this block
+    long int maxRecords; // The maximum number of records that this block can have
+    int nextBF_Block; // A "pointer" to the next block in case of overflow
 } HT_block_info;
 
 int hash(const char *key, const int buckets);
