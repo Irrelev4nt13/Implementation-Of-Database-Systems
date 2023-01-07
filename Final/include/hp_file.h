@@ -24,7 +24,7 @@ typedef struct
 
 typedef struct
 {
-  int rec_num;/* Number */
+  int rec_num;
   BF_Block *next;
 } HP_block_info;
 

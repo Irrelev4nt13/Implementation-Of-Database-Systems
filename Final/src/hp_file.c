@@ -75,32 +75,32 @@ int HP_InsertEntry(HP_info *hp_info, Record record)
   {                                                                   /* If the file has some block allocated for storing, proceed to try inserting the record to one of these blocks */
     CALL_BF(BF_GetBlock(hp_info->fileDesc, hp_info->last_id, block)); /* Get the last block we inserted a record to insert the new record */
     data = BF_Block_GetData(block);
-    HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
+    HP_block_info *blinfo = data + hp_info->max * sizeof(Record); /* Use the right offset to get the block data */
     if (blinfo->rec_num < hp_info->max)
     {
       /* Add to an existing block which is not full */
       Record *rec = data;
-      memcpy(&rec[blinfo->rec_num], &record, sizeof(Record));
-      blinfo->rec_num++;
-      BF_Block_SetDirty(block);
-      CALL_BF(BF_UnpinBlock(block));
-      BF_Block_Destroy(&block);
-      return hp_info->last_id;
+      memcpy(&rec[blinfo->rec_num], &record, sizeof(Record)); /* Store the record to the block */
+      blinfo->rec_num++;                                      /* Increment the number of records stored */
+      BF_Block_SetDirty(block);                               /* We made changes so we make the block dirty */
+      CALL_BF(BF_UnpinBlock(block));                          /* Unpin the block */
+      BF_Block_Destroy(&block);                               /* Destroy the block as we no longer need it */
+      return hp_info->last_id;                                /* Return the id of the block we inserted */
     }
     CALL_BF(BF_UnpinBlock(block));
   }
   /* Make a new block either because we have 0 either because the others are full */
   CALL_BF(BF_AllocateBlock(hp_info->fileDesc, block));
   data = BF_Block_GetData(block);
-  HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
+  HP_block_info *blinfo = data + hp_info->max * sizeof(Record); /* Use the right offset to get the block data */
   Record *rec = data;
-  memcpy(&rec[0], &record, sizeof(Record));
-  blinfo->rec_num = 1;
+  memcpy(&rec[0], &record, sizeof(Record)); /* Store the record to the block */
+  blinfo->rec_num = 1;                      /* We inserted the first record to the block so set the record counter for this block to 1 */
   hp_info->last_id = block_num;
-  BF_Block_SetDirty(block);
-  CALL_BF(BF_UnpinBlock(block));
-  BF_Block_Destroy(&block);
-  return hp_info->last_id;
+  BF_Block_SetDirty(block);      /* We made changes so we make the block dirty */
+  CALL_BF(BF_UnpinBlock(block)); /* Unpin the block */
+  BF_Block_Destroy(&block);      /* Destroy the block as we no longer need it */
+  return hp_info->last_id;       /* Return the id of the block we inserted */
 }
 
 int HP_GetAllEntries(HP_info *hp_info, int value)
