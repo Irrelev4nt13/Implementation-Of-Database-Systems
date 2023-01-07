@@ -6,7 +6,7 @@
 #include "ht_table.h"
 #include "sht_table.h"
 
-#define RECORDS_NUM 203 // you can change it if you want
+#define RECORDS_NUM 430 // you can change it if you want
 #define FILE_NAME "data.db"
 #define INDEX_NAME "index.db"
 
@@ -23,7 +23,7 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
 
 int main(void)
 {
-    srand(1);
+    srand(time(NULL));
     BF_Init(LRU);
     // Αρχικοποιήσεις
     HT_CreateFile(FILE_NAME, 5);
@@ -48,12 +48,12 @@ int main(void)
     }
     // Τυπώνουμε όλες τις εγγραφές με όνομα searchName
     printf("RUN PrintAllEntries for name %s\n", searchName);
-    SHT_SecondaryGetAllEntries(info, index_info, searchName);
+    printf("%d\n", SHT_SecondaryGetAllEntries(info, index_info, searchName));
     // Κλείνουμε το αρχείο κατακερματισμού και το δευτερεύον ευρετήριο
     SHT_CloseSecondaryIndex(index_info);
     HT_CloseFile(info);
     //
-    HashStatistics(FILE_NAME);
+    // HashStatistics(FILE_NAME);
     BF_Close();
 }
 int HashStatistics(char *filename /* όνομα του αρχείου που ενδιαφέρει */)

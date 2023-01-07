@@ -168,36 +168,33 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
   int block_num;
   BF_GetBlockCounter(ht_info->fileDesc, &block_num);
   printf("%d\n", block_num);
-  int *visited = malloc(block_num * sizeof(int));/*  */
+  int *visited = malloc(block_num * sizeof(int)); /* Array to help us print all Records needed without duplicates */
+  for (int i = 0; i < block_num; i++)
+    visited[i] = 0; /* Each element of the array is set to 0 */
+
   while (curr_blockId != -1)
   {
     CALL_OR_DIE(BF_GetBlock(sht_info->fileDesc, curr_blockId, block));
     void *data = BF_Block_GetData(block);
-    blockCounter++;
     SHT_block_info *block_info = data + (BF_BLOCK_SIZE - sizeof(SHT_block_info));
 
     SHT_Record *rec = data;
-    for (int i = 0; i < block_num; i++)
-      visited[i] = 0;
-    for (int i = 0; i < block_num; i++)
-      if (strcmp(name, rec[i].name) == 0)
-        visited[rec[i].block]++;
-
     for (int i = 0; i < block_info->numRecords; i++)
     {
-      if (visited[rec[i].block] != 0)
-      {
-        CALL_OR_DIE(BF_GetBlock(ht_info->fileDesc, rec[i].block, block1));
+      if (visited[rec[i].block] == 0)                                      /* We have not printed the Records with record.name==name in this block */
+      {                                                                    /* If visited[rec[i].block] is not zero then we have already printed all the records we need which are stored in the block */
+        CALL_OR_DIE(BF_GetBlock(ht_info->fileDesc, rec[i].block, block1)); /* Get the block which is stored Records with the record.name "name "name" */
+        blockCounter++;
         void *data1 = BF_Block_GetData(block1);
         HT_block_info *block_info1 = data1 + (BF_BLOCK_SIZE - sizeof(HT_block_info));
 
         Record *rec1 = data1;
         for (int i = 0; i < block_info1->numRecords; i++)
-        {
-          if (strcmp(name, rec1[i].name) == 0)
+        {                                      /* Traverse all the Records of the block rec[i].block */
+          if (strcmp(name, rec1[i].name) == 0) /* If the record has the field name we are looking for, print it */
             printRecord(rec1[i]);
         }
-        visited[rec[i].block] = 0;
+        visited[rec[i].block] = 1; /* We have printed all the needed records of this block so dont visit it again! */
         CALL_OR_DIE(BF_UnpinBlock(block1));
       }
     }
