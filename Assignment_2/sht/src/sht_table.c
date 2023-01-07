@@ -171,11 +171,18 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
     SHT_block_info *block_info = data + (BF_BLOCK_SIZE - sizeof(SHT_block_info));
 
     SHT_Record *rec = data;
+    int *visited = malloc(block_info->numRecords * sizeof(int));
+    for (int i = 0; i < block_info->numRecords; i++)
+      visited[i] = 0;
+    for (int i = 0; i < block_info->numRecords; i++)
+      if (strcmp(name, rec[i].name) == 0)
+        visited[rec[i].block]++;
+        
     for (int i = 0; i < block_info->numRecords; i++)
     {
-      if (strcmp(name, rec[i].name) == 0)
+      if (visited[rec[i].block] != 0)
       {
-        CALL_OR_DIE(BF_GetBlock(ht_info->fileDesc, rec->block, block1));
+        CALL_OR_DIE(BF_GetBlock(ht_info->fileDesc, rec[i].block, block1));
         void *data1 = BF_Block_GetData(block1);
         HT_block_info *block_info1 = data1 + (BF_BLOCK_SIZE - sizeof(HT_block_info));
 
@@ -183,15 +190,15 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
         for (int i = 0; i < block_info1->numRecords; i++)
         {
           if (strcmp(name, rec1[i].name) == 0)
-          {
             printRecord(rec1[i]);
-          }
         }
+        visited[rec[i].block] = 0;
         CALL_OR_DIE(BF_UnpinBlock(block1));
       }
     }
     curr_blockId = block_info->nextBF_Block;
     CALL_OR_DIE(BF_UnpinBlock(block));
+    free(visited);
   }
   CALL_OR_DIE(BF_UnpinBlock(block));
   BF_Block_Destroy(&block);
