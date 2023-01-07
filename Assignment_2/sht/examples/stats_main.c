@@ -70,9 +70,11 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
     printf("%c\n", type_file[0]);
     if (type_file[0] == 't')
     {
+        HT_info *info = data;
     }
     else if (type_file[0] == 's')
     {
+        SHT_info *info = data;
     }
     else
     {
