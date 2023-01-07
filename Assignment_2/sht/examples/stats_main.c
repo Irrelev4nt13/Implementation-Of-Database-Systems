@@ -53,7 +53,7 @@ int main(void)
     SHT_CloseSecondaryIndex(index_info);
     HT_CloseFile(info);
     //
-    // HashStatistics(FILE_NAME);
+    HashStatistics(FILE_NAME);
     BF_Close();
 }
 int HashStatistics(char *filename /* όνομα του αρχείου που ενδιαφέρει */)
