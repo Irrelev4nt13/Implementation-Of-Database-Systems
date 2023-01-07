@@ -24,8 +24,7 @@ typedef struct
 
 typedef struct
 {
-  int rec_num;/* Number */
-  BF_Block *next;
+  int rec_num; /* Number of records in the block */
 } HP_block_info;
 
 /*Η συνάρτηση HP_CreateFile χρησιμοποιείται για τη δημιουργία και
