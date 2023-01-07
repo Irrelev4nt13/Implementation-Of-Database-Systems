@@ -5,28 +5,35 @@
 
 typedef struct
 {
-    char type_file;
-    int fileDesc;        /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */
-    long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
-    int headerBlock;
-    long int numBlocks;
-    long int hashTable[20];
-    char *filename;
-    char *sfilename;
+    char type_file; // Store a character accordingly to the file's type, t-> hash, p->heap, s->sht
+    int fileDesc;   // file descriptor
+    long int numBuckets; // the number of buckets in the hash table
+    int headerBlock; // the id of the header block
+    long int numBlocks; // the total number of blocks used by hash table
+    long int hashTable[20]; // the hash table 
+    //########################################################################
+    //                                                                       #
+    //  With this number it can only work for 20 buckets                     #
+    // You can increase, but be careful because the block has limited space  #
+    //                                                                       #
+    //########################################################################
+    char *filename; // the file name of the primary index
+    char *sfilename; // the file name of secondary index
 } SHT_info;
 
 typedef struct
 {
-    long int numRecords; /* ο αριθμός των εγγραφών στο συγκεκριμένο block */
-    long int maxRecords;
-    int nextBF_Block; /* δείκτης στο επόμενο block δεδομένων */
+   long int numRecords; // The total number of records in this block
+    long int maxRecords; // The maximum number of records that this block can have
+    int nextBF_Block; // A "pointer" to the next block in case of overflow
 } SHT_block_info;
 
+// We created a custom struct to make our record 
+// The record is consisted of the name and the block that the name is written
 typedef struct
 {
     char name[15];
     int block;
-    int num_name;
 } SHT_Record;
 
 /*Η συνάρτηση SHT_CreateSecondaryIndex χρησιμοποιείται για τη δημιουργία
