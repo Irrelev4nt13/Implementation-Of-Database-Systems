@@ -3,16 +3,31 @@
 #include <record.h>
 #include <ht_table.h>
 
-
-
-
-typedef struct {
-    // Να το συμπληρώσετε
+typedef struct
+{
+    char *filename;
+    char *sfilename;
+    int fileDesc;        /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */
+    long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
+    int headerBlock;
+    long int numBlocks;
+    long int hashTable[20];
+    char type_file;
 } SHT_info;
 
-typedef struct {
-    // Να το συμπληρώσετε
+typedef struct
+{
+    long int numRecords; /* ο αριθμός των εγγραφών στο συγκεκριμένο block */
+    long int maxRecords;
+    int nextBF_Block; /* δείκτης στο επόμενο block δεδομένων */
 } SHT_block_info;
+
+typedef struct
+{
+    char name[15];
+    int block;
+    int num_name;
+} SHT_Record;
 
 /*Η συνάρτηση SHT_CreateSecondaryIndex χρησιμοποιείται για τη δημιουργία
 και κατάλληλη αρχικοποίηση ενός αρχείου δευτερεύοντος κατακερματισμού με
@@ -21,15 +36,13 @@ typedef struct {
 περίπτωση -1.*/
 int SHT_CreateSecondaryIndex(
     char *sfileName, /* όνομα αρχείου δευτερεύοντος ευρετηρίου*/
-    int buckets, /* αριθμός κάδων κατακερματισμού*/
-    char* fileName /* όνομα αρχείου πρωτεύοντος ευρετηρίου*/);
-
-
+    int buckets,     /* αριθμός κάδων κατακερματισμού*/
+    char *fileName /* όνομα αρχείου πρωτεύοντος ευρετηρίου*/);
 
 /* Η συνάρτηση SHT_OpenSecondaryIndex ανοίγει το αρχείο με όνομα sfileName
 και διαβάζει από το πρώτο μπλοκ την πληροφορία που αφορά το δευτερεύον
 ευρετήριο κατακερματισμού.*/
-SHT_info* SHT_OpenSecondaryIndex(
+SHT_info *SHT_OpenSecondaryIndex(
     char *sfileName /* όνομα αρχείου δευτερεύοντος ευρετηρίου */);
 
 /*Η συνάρτηση SHT_CloseSecondaryIndex κλείνει το αρχείο που προσδιορίζεται
@@ -37,7 +50,7 @@ SHT_info* SHT_OpenSecondaryIndex(
 0, ενώ σε διαφορετική περίπτωση -1. Η συνάρτηση είναι υπεύθυνη και για την
 αποδέσμευση της μνήμης που καταλαμβάνει η δομή που περάστηκε ως παράμετρος,
 στην περίπτωση που το κλείσιμο πραγματοποιήθηκε επιτυχώς.*/
-int SHT_CloseSecondaryIndex( SHT_info* header_info );
+int SHT_CloseSecondaryIndex(SHT_info *header_info);
 
 /*Η συνάρτηση SHT_SecondaryInsertEntry χρησιμοποιείται για την εισαγωγή μιας
 εγγραφής στο αρχείο κατακερματισμού. Οι πληροφορίες που αφορούν το αρχείο
@@ -46,8 +59,8 @@ int SHT_CloseSecondaryIndex( SHT_info* header_info );
 προς εισαγωγή. Σε περίπτωση που εκτελεστεί επιτυχώς, επιστρέφεται 0, ενώ σε
 διαφορετική περίπτωση -1.*/
 int SHT_SecondaryInsertEntry(
-    SHT_info* header_info, /* επικεφαλίδα του δευτερεύοντος ευρετηρίου*/
-    Record record, /* η εγγραφή για την οποία έχουμε εισαγωγή στο δευτερεύον ευρετήριο*/
+    SHT_info *header_info, /* επικεφαλίδα του δευτερεύοντος ευρετηρίου*/
+    Record record,         /* η εγγραφή για την οποία έχουμε εισαγωγή στο δευτερεύον ευρετήριο*/
     int block_id /* το μπλοκ του αρχείου κατακερματισμού στο οποίο έγινε η εισαγωγή */);
 
 /*Η συνάρτηση αυτή χρησιμοποιείται για την εκτύπωση όλων των εγγραφών που
@@ -61,9 +74,8 @@ int SHT_SecondaryInsertEntry(
 πλήθος των blocks που διαβάστηκαν μέχρι να βρεθούν όλες οι εγγραφές. Σε
 περίπτωση λάθους επιστρέφει -1.*/
 int SHT_SecondaryGetAllEntries(
-    HT_info* ht_info, /* επικεφαλίδα του αρχείου πρωτεύοντος ευρετηρίου*/
-    SHT_info* header_info, /* επικεφαλίδα του αρχείου δευτερεύοντος ευρετηρίου*/
-    char* name /* το όνομα στο οποίο γίνεται αναζήτηση */);
-
+    HT_info *ht_info,      /* επικεφαλίδα του αρχείου πρωτεύοντος ευρετηρίου*/
+    SHT_info *header_info, /* επικεφαλίδα του αρχείου δευτερεύοντος ευρετηρίου*/
+    char *name /* το όνομα στο οποίο γίνεται αναζήτηση */);
 
 #endif // SHT_FILE_H
