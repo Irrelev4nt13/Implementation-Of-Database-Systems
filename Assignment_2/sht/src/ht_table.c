@@ -150,7 +150,6 @@ int HT_InsertEntry(HT_info *ht_info, Record record)
     BF_Block_SetDirty(block);
     CALL_OR_DIE(BF_GetBlockCounter(ht_info->fileDesc, &blockId));
     ht_info->hashTable[index] = --blockId;
-    // CALL_OR_DIE(BF_UnpinBlock(block));
   }
   else
   {
