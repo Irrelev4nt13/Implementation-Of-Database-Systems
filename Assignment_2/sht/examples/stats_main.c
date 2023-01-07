@@ -6,7 +6,7 @@
 #include "ht_table.h"
 #include "sht_table.h"
 
-#define RECORDS_NUM 31 // you can change it if you want
+#define RECORDS_NUM 203 // you can change it if you want
 #define FILE_NAME "data.db"
 #define INDEX_NAME "index.db"
 
@@ -34,13 +34,15 @@ int main(void)
     // Θα ψάξουμε στην συνέχεια το όνομα searchName
     Record record = randomRecord();
     char searchName[15];
-    strcpy(searchName, record.name);
+    strcpy(searchName, "Giorgos");
 
     // Κάνουμε εισαγωγή τυχαίων εγγραφών τόσο στο αρχείο κατακερματισμού τις οποίες προσθέτουμε και στο δευτερεύον ευρετήριο
     printf("Insert Entries\n");
     for (int id = 0; id < RECORDS_NUM; ++id)
     {
         record = randomRecord();
+        if (strcmp(record.name, searchName) == 0)
+            printRecord(record);
         int block_id = HT_InsertEntry(info, record);
         SHT_SecondaryInsertEntry(index_info, record, block_id);
     }
@@ -68,7 +70,6 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
 
     data = BF_Block_GetData(block1);
     char *type_file = data;
-    printf("%c\n", type_file[0]);
     if (type_file[0] == 't')
     {
         HT_info *info = data;
