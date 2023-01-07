@@ -14,14 +14,18 @@ sht:
 	@echo " Compile sht_main ...";
 	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/sht_main.c ./src/record.c ./src/sht_table.c ./src/ht_table.c -lbf -o ./build/sht_main -O2
 
-run: sht
+stats:
+	@echo " Compile stats_main ...";
+	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/stats_main.c ./src/record.c ./src/sht_table.c ./src/ht_table.c -lbf -o ./build/stats_main -O2
+
+run: stats
 	rm -f data.db index.db
-	./build/sht_main
-valgrind: sht
+	./build/stats_main
+valgrind: stats
 	rm -f data.db index.db
-	valgrind ./build/sht_main
-gdb: sht
+	valgrind ./build/stats_main
+gdb: stats
 	rm -f data.db index.db
-	gdb -q ./build/sht_main
+	gdb -q ./build/stats_main
 clean:
 	rm -f data.db index.db

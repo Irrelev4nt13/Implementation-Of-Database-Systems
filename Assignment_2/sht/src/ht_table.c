@@ -50,8 +50,7 @@ int HT_CreateFile(char *fileName, int buckets)
   info->fileDesc = fileDesc;
   info->numBuckets = buckets;
   info->headerBlock = --headerId;
-  info->isHeapFile = false;
-  info->isHashFile = true;
+  info->type_file = 't';
   info->numBlocks = buckets;
   for (int i = 0; i < buckets; i++)
     info->hashTable[i] = i + 1;
@@ -90,13 +89,13 @@ HT_info *HT_OpenFile(char *fileName)
   CALL_OR_DIE(BF_GetBlock(fileDesc, 0, block));
 
   data = BF_Block_GetData(block);
-  HT_info *info = data;
-  if (info->isHashFile != true || info->isHeapFile != false)
+  char *type_file = data;
+  if (type_file[0] != 't')
   {
     printf("Not a hash file\n");
     return NULL;
   }
-
+  HT_info *info = data;
   // CALL_OR_DIE(BF_UnpinBlock(block));
   BF_Block_Destroy(&block);
   return info;

@@ -5,14 +5,14 @@
 
 typedef struct
 {
-    char *filename;
-    char *sfilename;
+    char type_file;
     int fileDesc;        /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */
     long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
     int headerBlock;
     long int numBlocks;
     long int hashTable[20];
-    char type_file;
+    char *filename;
+    char *sfilename;
 } SHT_info;
 
 typedef struct

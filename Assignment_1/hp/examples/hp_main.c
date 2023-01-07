@@ -25,10 +25,10 @@ int main()
     //   HP_InsertEntry(info, record);
   }
   // printf("RUN PrintAllEntries\n");
-  // int id = rand() % RECORDS_NUM;
-  // printf("\nSearching for: %d\n", id);
-  // printf("%d\n", HP_GetAllEntries(info, id));
-  // HP_GetAllEntries(info, 4);
+  int id = rand() % RECORDS_NUM;
+  printf("\nSearching for: %d\n", id);
+  printf("%d\n", HP_GetAllEntries(info, id));
+  HP_GetAllEntries(info, 4);
 
   HP_CloseFile(info);
   // free(info);

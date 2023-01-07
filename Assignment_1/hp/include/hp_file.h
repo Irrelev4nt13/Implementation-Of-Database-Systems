@@ -16,12 +16,11 @@
 /* Η δομή HP_info κρατάει μεταδεδομένα που σχετίζονται με το αρχείο σωρού*/
 typedef struct
 {
+  char type_file;
   int fileDesc;
   int last_id;
   int max;
   BF_Block *located;
-  bool isHeapFile;
-  bool isHashFile;
 } HP_info;
 
 typedef struct

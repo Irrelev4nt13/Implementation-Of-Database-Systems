@@ -22,8 +22,7 @@ int HP_CreateFile(char *fileName)
   info->fileDesc = fd1;
   info->max = (BF_BLOCK_SIZE - sizeof(HP_block_info)) / sizeof(Record);
   info->last_id = 0;
-  info->isHeapFile = true;
-  info->isHashFile = false;
+  info->type_file = 'p';
   BF_Block_SetDirty(block);
   BF_Block_Destroy(&block);
   return BF_OK;
@@ -40,12 +39,13 @@ HP_info *HP_OpenFile(char *fileName)
   CALL_BF(BF_OpenFile(fileName, &fd1));
   CALL_BF(BF_GetBlock(fd1, 0, block));
   data = BF_Block_GetData(block);
-  HP_info *info = data;
-  if (info->isHashFile != false || info->isHeapFile != true)
+  char *type_file = data;
+  if (type_file[0] != 'p')
   {
     printf("Not a heap file\n");
     return NULL;
   }
+  HP_info *info = data;
 
   BF_Block_Destroy(&block);
   return info;

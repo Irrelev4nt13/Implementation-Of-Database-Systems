@@ -67,12 +67,13 @@ SHT_info *SHT_OpenSecondaryIndex(char *indexName)
   CALL_OR_DIE(BF_GetBlock(fileDesc, 0, block));
 
   data = BF_Block_GetData(block);
-  SHT_info *info = data;
-  if (info->type_file != 's')
+  char *type_file = data;
+  if (type_file[0] != 's')
   {
     printf("Not a secondary hash file\n");
     return NULL;
   }
+  SHT_info *info = data;
   BF_Block_Destroy(&block);
   return info;
 }
@@ -83,6 +84,7 @@ int SHT_CloseSecondaryIndex(SHT_info *SHT_info)
   BF_Block_Init(&block);
 
   CALL_OR_DIE(BF_GetBlock(SHT_info->fileDesc, 0, block));
+  
   CALL_OR_DIE(BF_UnpinBlock(block));
   BF_Block_Destroy(&block);
   CALL_OR_DIE(BF_CloseFile(SHT_info->fileDesc));
@@ -122,7 +124,6 @@ int SHT_SecondaryInsertEntry(SHT_info *sht_info, Record record, int block_id)
     memcpy(&rec[block_info->numRecords], &infos, sizeof(SHT_Record));
     block_info->numRecords++;
     BF_Block_SetDirty(block);
-    // printf("%ld\n", block_info->maxRecords);
   }
   else
   {
@@ -177,7 +178,7 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
     for (int i = 0; i < block_info->numRecords; i++)
       if (strcmp(name, rec[i].name) == 0)
         visited[rec[i].block]++;
-        
+
     for (int i = 0; i < block_info->numRecords; i++)
     {
       if (visited[rec[i].block] != 0)

@@ -7,14 +7,13 @@
 #define MAX_NUM_BUCKETS 59
 
 typedef struct
-{                        // Να το συμπληρώσετε
+{      
+    char type_file;                  // Να το συμπληρώσετε
     int fileDesc;        /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block */
     long int numBuckets; /* το πλήθος των “κάδων” του αρχείου κατακερματισμού */
     int headerBlock;
     long int numBlocks;
     long int hashTable[20];
-    bool isHeapFile;
-    bool isHashFile;
 } HT_info;
 
 typedef struct
