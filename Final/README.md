@@ -1,23 +1,33 @@
-# Άσκηση 1 & 2 - Κ18 - Υλοποίηση Συστημάτων Βάσεων Δεδομένων Χειμερινό Εξάμηνο 2022 - 2023
-##  Μέλη Ομάδας:
-Κανελλάκης Κωνσταντίνος - 1115202000064 <br />
-Χατζησπύρου Μιχαήλ - 1115202000212
+# Assignment 1 & 2 - Κ18 - Implementation of Database Systems Winter Semester 2022 - 2023
+## Contributing
+Kanellakis Konstantinos - 1115202000064 <br />
+Chatzispyrou Michail - 1115202000212
+# Compile & Run
+## For compilation
+- `make bf` to compile the necessary files for the given library `BF`
+- `make hp` to compile the necessary files for heap file
+- `make ht` to compile the necessary files for hash file
+- `make sht` to compile the necessary files for secondary index file
+- `make stats` to compile the necessary files for HashStatistics
+## For execution 
+- `make execute_hp` to execute the heap test
+- `make execute_hp` to execute the hash test
+- `make execute_sht` to execute the secondary index test
+- `make execute_stats` to execute the statistics test
 # Heap File
+## General Structure
+## Technical Details
+## Admissions 
 # Hash Table File 
-## Γενική Περιγραφή
-Έχουν υλοποιηθεί όλες οι ζητούμενες λειτουργίες της δομής στατικού κατακερματισμού και έχουν ελεγχθεί για την ορθή λειτουργία τους. 
-## Γενική Δομή 
-## Τεχνικές Λεοπτομέρειες
+## General Structure
+## Technical Details
+## Admissions 
 # Secondary Hash Table File
-# Μεταγλώττιση και εκτέλεση των προγραμμάτων
-## Για την μεταγλώττιση
-- `make bf` για μεταγλώττιση της δοσμένης βιβλιοθήκης `BF`
-- `make hp` για μεταγλώττιση των αρχείων σωρού
-- `make ht` για μεταγλώττιση των αρχείων στατικού κατακερματισμού
-- `make sht` για μεταγλώττιση των αρχείων δευτερεύοντως ευρετηρίου
-- `make stats` για μεταγλώττιση των αρχείων στατιστικών
-## Για την εκτέλεση 
-- `make execute_hp` για εκτέλεση των αρχείων σωρού
-- `make execute_hp` για εκτέλεση των αρχείων στατιστικού κατακερματισμού
-- `make execute_sht`για εκτέλεση των αρχείων του δευτερεύοντως ευρετηρίου
-- `make execute_stats`για εκτέλεση των αρχείων στατιστικών
+## General Structure
+## Technical Details
+## Admissions 
+# Hash Statistics
+## General Structure
+## Technical Details
+## Admissions 
+## Additional functionalities
