@@ -1,4 +1,4 @@
-# Assignment 1 & 2 - Κ18 - Implementation of Database Systems Winter Semester 2022 - 2023
+# <div align="center"> Assignment 1 & 2 <br/> Κ18 - Implementation of Database Systems Winter Semester 2022 - 2023
 
 ## Contributing
 
