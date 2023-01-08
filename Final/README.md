@@ -244,5 +244,3 @@ Same structure as `SHT`
 
 The main function for statistics is almost the same as `sht_main.c` but we also call the function `int HashStatistics()` 2 times. One time for the `INDEX_NAME` and one for the `FILE_NAME`. The functionality of the two is the same with only difference that we use different structures depending on the file we are analyzing. <br/>
 At first we check the type of file to use the right structures. After we get the number of the blocks that there are in the file we traverse every bucket to get the statistics we need.
-
-## Additional functionalities
