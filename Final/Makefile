@@ -20,7 +20,7 @@ stats:
 
 execute_hp: hp
 	make clean
-	valgrind ./build/hp_main
+	./build/hp_main
 execute_ht: ht
 	make clean
 	./build/ht_main
@@ -31,20 +31,6 @@ execute_sht: sht
 execute_stats: stats
 	make clean
 	./build/stats_main
-
-# execute_hp: hp
-# 	make clean
-# 	valgrind ./build/hp_main
-# execute_ht: ht
-# 	make clean
-# 	valgrind ./build/ht_main
-# execute_sht: sht
-# 	make clean
-# 	valgrind ./build/sht_main
-
-# execute_stats: stats
-# 	make clean
-# 	valgrind ./build/stats_main
 
 clean:
 	rm -f data.db index.db

@@ -41,8 +41,6 @@ int main()
   {
     record = randomRecord();
     int block_id = HT_InsertEntry(info, record);
-    if (strcmp(record.name, "Vagelis") == 0)
-      printRecord(record);
     SHT_SecondaryInsertEntry(index_info, record, block_id);
   }
   // Τυπώνουμε όλες τις εγγραφές με όνομα searchName

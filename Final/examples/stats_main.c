@@ -28,15 +28,14 @@ int main(void)
     srand(1);
     BF_Init(LRU);
     // Αρχικοποιήσεις
-    HT_CreateFile(FILE_NAME, 5);
-    SHT_CreateSecondaryIndex(INDEX_NAME, 5, FILE_NAME);
+    HT_CreateFile(FILE_NAME, 20);
+    SHT_CreateSecondaryIndex(INDEX_NAME, 20, FILE_NAME);
     HT_info *info = HT_OpenFile(FILE_NAME);
     SHT_info *index_info = SHT_OpenSecondaryIndex(INDEX_NAME);
-
     // Θα ψάξουμε στην συνέχεια το όνομα searchName
     Record record = randomRecord();
     char searchName[15];
-    strcpy(searchName, "Giorgos");
+    strcpy(searchName, record.name);
 
     // Κάνουμε εισαγωγή τυχαίων εγγραφών τόσο στο αρχείο κατακερματισμού τις οποίες προσθέτουμε και στο δευτερεύον ευρετήριο
     printf("Insert Entries\n");
@@ -81,7 +80,7 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
         double average;
         bool flag = true;
         CALL_OR_DIE(BF_GetBlockCounter(fileDesc, &count_block));
-        printf("%d number of blocks\n", count_block); /* Print the answer to the first statistics question */
+        printf("%4d number of blocks\n", count_block); /* Print the answer to the first statistics question */
         int count_bucket_overflow = 0;
         for (int i = 0; i < info->numBuckets; i++)
         { /* Traverse all Buckets */
@@ -109,15 +108,15 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
             sum += sum1; /* Find sum number of Records of every block so we can calculate average */
             if (overflow > 1)
             {
-                count_bucket_overflow++;                                   /* Increment the overflow counter for the buckets */
-                printf("Bucket %d has %d overflow blocks\n", i, overflow); /* Print the answer to the fourth statistics question */
+                count_bucket_overflow++;                                       /* Increment the overflow counter for the buckets */
+                printf("Bucket %4d has %4d overflow blocks\n", i, overflow); /* Print the answer to the fourth statistics question */
             }
         }
-        printf("Total buckets with block overflow are %d\n", count_bucket_overflow); /* Print the answer to the fourth statistics question */
+        printf("Total buckets with block overflow are %4d\n", count_bucket_overflow); /* Print the answer to the fourth statistics question */
         average = sum / (double)info->numBuckets;
-        printf("Min=%d Max=%d Average=%f per bucket\n", min, max, average); /* Print the answer to the second statistics question */
+        printf("Minimum number of records in bucket = %4d\nMaximum number of records in bucket = %4d\nAverage number of records in bucket = %4f\n", min, max, average); /* Print the answer to the second statistics question */
         average = (count_block - 1) / (double)info->numBuckets;
-        printf("Average=%f blocks per bucket\n", average); /* Print the answer to the third statistics question */
+        printf("Average number of blocks per bucket = %4f \n", average); /* Print the answer to the third statistics question */
     }
     else if (type_file[0] == 's')
     {
@@ -126,7 +125,7 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
         double average;
         bool flag = true;
         CALL_OR_DIE(BF_GetBlockCounter(fileDesc, &count_block));
-        printf("%d number of blocks\n", count_block); /* Print the answer to the first statistics question */
+        printf("%4d number of blocks\n", count_block); /* Print the answer to the first statistics question */
         int count_bucket_overflow = 0;
         for (int i = 0; i < info->numBuckets; i++)
         { /* Traverse all Buckets */
@@ -154,15 +153,15 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
             sum += sum1; /* Find sum number of Records of every block so we can calculate average */
             if (overflow > 1)
             {
-                count_bucket_overflow++;                                   /* Increment the overflow counter for the buckets */
-                printf("Bucket %d has %d overflow blocks\n", i, overflow); /* Print the answer to the fourth statistics question */
+                count_bucket_overflow++;                                     /* Increment the overflow counter for the buckets */
+                printf("Bucket %4d has %4d overflow blocks\n", i, overflow); /* Print the answer to the fourth statistics question */
             }
         }
-        printf("Total buckets with block overflow are %d\n", count_bucket_overflow); /* Print the answer to the fourth statistics question */
+        printf("Total buckets with block overflow are %4d\n", count_bucket_overflow); /* Print the answer to the fourth statistics question */
         average = sum / (double)info->numBuckets;
-        printf("Min=%d Max=%d Average=%f per bucket\n", min, max, average); /* Print the answer to the second statistics question */
+        printf("Minimum number of records in bucket = %4d\nMaximum number of records in bucket = %4d\nAverage number of records in bucket = %4f\n", min, max, average); /* Print the answer to the second statistics question */
         average = (count_block - 1) / (double)info->numBuckets;
-        printf("Average=%f blocks per bucket\n", average); /* Print the answer to the third statistics question */
+        printf("Average number of blocks per bucket = %4f \n", average); /* Print the answer to the third statistics question */
     }
     else
     {
