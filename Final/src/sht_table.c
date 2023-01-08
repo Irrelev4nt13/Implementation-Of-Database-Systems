@@ -211,7 +211,7 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
 
   int index = hash(name, sht_info->numBuckets);
 
-  int blockCounter = 0; /* Counter of the blocks of the primary index we traverse.The return value */
+  int blockCounter = 0; /* Counter of the blocks we traverse.The return value */
   int curr_blockId = sht_info->hashTable[index];
   int block_num;
   BF_GetBlockCounter(ht_info->fileDesc, &block_num);
@@ -225,6 +225,7 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
     void *data = BF_Block_GetData(block);
     SHT_block_info *block_info = data + (BF_BLOCK_SIZE - sizeof(SHT_block_info)); /* Get to the block info data stored in the end of the block */
 
+    blockCounter++;
     SHT_Record *rec = data;
     for (int i = 0; i < block_info->numRecords; i++)
     {
