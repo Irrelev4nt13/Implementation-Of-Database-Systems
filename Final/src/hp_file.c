@@ -106,25 +106,26 @@ int HP_GetAllEntries(HP_info *hp_info, int value)
 {
   BF_Block *block;
   void *data;
-  int block_num, counter = -1;                                /* Variable to store the number of blocks we had to traverse till we find all our records */
+  int block_num, counter = -1;                                /* Variable to store the number of blocks we had to traverse till we find the record with a specific id */
   CALL_BF(BF_GetBlockCounter(hp_info->fileDesc, &block_num)); /* Get the number of blocks so that we traverse them all */
   BF_Block_Init(&block);
   for (int i = 1; i < block_num; i++)
   {                                                    /* Traverse every block */
-    CALL_BF(BF_GetBlock(hp_info->fileDesc, i, block)); /* Get the blovk i */
+    CALL_BF(BF_GetBlock(hp_info->fileDesc, i, block)); /* Get the block i */
     data = BF_Block_GetData(block);
     HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
     for (int j = 0; j < blinfo->rec_num; j++)
     { /* Traverse every record of the block i */
       Record *rec = data;
-      if (value == rec[j].id) /* If the rec[j] record is the one we are searching for print it (It may exist more than once so we dont stop searching) */
+      if (value == rec[j].id) /* If the rec[j] record is the one we are searching for print it and quit searching */
       {
         printRecord(rec[j]);
         counter = i; /* Update the value of blocks traversed */
+        break;
       }
     }
     CALL_BF(BF_UnpinBlock(block)); /* Unpin block as we no longer need it */
   }
   BF_Block_Destroy(&block);
-  return counter; /* Return -1 if you dont find the id you are looking for or the number of blocks traversed till we found every record we needed */
+  return counter; /* Return -1 if you dont find the id you are looking for or return the number of blocks traversed till we found the record we needed */
 }
