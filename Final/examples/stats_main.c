@@ -80,7 +80,7 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
         double average;
         bool flag = true;
         CALL_OR_DIE(BF_GetBlockCounter(fileDesc, &count_block));
-        printf("%4d number of blocks\n", count_block); /* Print the answer to the first statistics question */
+        printf("File has %4d blocks\n", count_block); /* Print the answer to the first statistics question */
         int count_bucket_overflow = 0;
         for (int i = 0; i < info->numBuckets; i++)
         { /* Traverse all Buckets */
@@ -125,7 +125,7 @@ int HashStatistics(char *filename /* όνομα του αρχείου που ε�
         double average;
         bool flag = true;
         CALL_OR_DIE(BF_GetBlockCounter(fileDesc, &count_block));
-        printf("%4d number of blocks\n", count_block); /* Print the answer to the first statistics question */
+        printf("File has %4d blocks\n", count_block); /* Print the answer to the first statistics question */
         int count_bucket_overflow = 0;
         for (int i = 0; i < info->numBuckets; i++)
         { /* Traverse all Buckets */
