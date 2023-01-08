@@ -54,6 +54,9 @@ int main(void)
     SHT_CloseSecondaryIndex(index_info);
     HT_CloseFile(info);
     //
+    printf("\nPrinting stats for FILE_NAME...\n\n");
+    HashStatistics(FILE_NAME);
+    printf("\nPrinting stats for INDEX_NAME...\n\n");
     HashStatistics(INDEX_NAME);
     BF_Close();
 }
