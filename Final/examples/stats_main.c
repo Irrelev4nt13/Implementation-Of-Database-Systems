@@ -6,7 +6,6 @@
 #include "ht_table.h"
 #include "sht_table.h"
 
-#include <stdbool.h>
 
 #define RECORDS_NUM 10 // you can change it if you want
 #define FILE_NAME "data.db"

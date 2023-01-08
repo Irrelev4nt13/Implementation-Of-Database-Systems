@@ -5,7 +5,7 @@
 #include "../include/bf.h"
 #include "../include/hp_file.h"
 
-#define RECORDS_NUM 7 // you can change it if you want
+#define RECORDS_NUM 100 // you can change it if you want
 #define FILE_NAME "data.db"
 
 int main()
@@ -15,22 +15,22 @@ int main()
   CALL_BF(HP_CreateFile(FILE_NAME));
   HP_info *info = HP_OpenFile(FILE_NAME);
   Record record;
-  srand(12569874);
+  srand(time(NULL));
   int r;
   for (int id = 0; id < RECORDS_NUM; ++id)
   {
     record = randomRecord();
     HP_InsertEntry(info, record);
-    // if (id == 4)
-    //   HP_InsertEntry(info, record);
   }
   // printf("RUN PrintAllEntries\n");
   int id = rand() % RECORDS_NUM;
   printf("\nSearching for: %d\n", id);
-  printf("%d\n", HP_GetAllEntries(info, id));
-  HP_GetAllEntries(info, 4);
+  printf("%d Blocks traversed till we found all the Records with id %d (If -1 is printed, we didnt find it)\n", HP_GetAllEntries(info, id), id);
+
+  id = rand() % RECORDS_NUM;
+  printf("\nSearching for: %d\n", id);
+  printf("%d Blocks traversed till we found all the Records with id %d (If -1 is printed, we didnt find it)\n", HP_GetAllEntries(info, id), id);
 
   HP_CloseFile(info);
-  // free(info);
   BF_Close();
 }

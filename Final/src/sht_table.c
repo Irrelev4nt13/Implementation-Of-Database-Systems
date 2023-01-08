@@ -211,7 +211,7 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
 
   int index = hash(name, sht_info->numBuckets);
 
-  int blockCounter = 0;
+  int blockCounter = 0; /* Counter of the blocks of the primary index we traverse.The return value */
   int curr_blockId = sht_info->hashTable[index];
   int block_num;
   BF_GetBlockCounter(ht_info->fileDesc, &block_num);
@@ -221,9 +221,9 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
 
   while (curr_blockId != -1)
   {
-    CALL_OR_DIE(BF_GetBlock(sht_info->fileDesc, curr_blockId, block));
+    CALL_OR_DIE(BF_GetBlock(sht_info->fileDesc, curr_blockId, block)); /* Get the bock than contains information about the name */
     void *data = BF_Block_GetData(block);
-    SHT_block_info *block_info = data + (BF_BLOCK_SIZE - sizeof(SHT_block_info));
+    SHT_block_info *block_info = data + (BF_BLOCK_SIZE - sizeof(SHT_block_info)); /* Get to the block info data stored in the end of the block */
 
     SHT_Record *rec = data;
     for (int i = 0; i < block_info->numRecords; i++)
@@ -232,6 +232,7 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
       {                                                                    /* If visited[rec[i].block] is not zero then we have already printed all the records we need which are stored in the block */
         CALL_OR_DIE(BF_GetBlock(ht_info->fileDesc, rec[i].block, block1)); /* Get the block which is stored Records with the record.name "name "name" */
 
+        blockCounter++;
         void *data1 = BF_Block_GetData(block1);
         HT_block_info *block_info1 = data1 + (BF_BLOCK_SIZE - sizeof(HT_block_info));
 
@@ -241,19 +242,20 @@ int SHT_SecondaryGetAllEntries(HT_info *ht_info, SHT_info *sht_info, char *name)
           if (strcmp(name, rec1[i].name) == 0) /* If the record has the field name we are looking for, print it */
           {
             printRecord(rec1[i]);
-            blockCounter++;
           }
         }
         visited[rec[i].block] = 1; /* We have printed all the needed records of this block so dont visit it again! */
         CALL_OR_DIE(BF_UnpinBlock(block1));
       }
     }
-    curr_blockId = block_info->nextBF_Block;
-    CALL_OR_DIE(BF_UnpinBlock(block));
+    curr_blockId = block_info->nextBF_Block; /* Go to the next  block (-1 value is setted if there is no next block) */
+    CALL_OR_DIE(BF_UnpinBlock(block));       /* Unpin the block as we no longer need it */
   }
-  free(visited);
+  free(visited); /* Free memory for the array visited */
   CALL_OR_DIE(BF_UnpinBlock(block));
   BF_Block_Destroy(&block);
   BF_Block_Destroy(&block1);
-  return blockCounter;
+  if (blockCounter == 0)
+    return -1;         /* Didnt found a record with the name "name" so return error */
+  return blockCounter; /* Return the number of blocks traversed till we found every record we needed */
 }

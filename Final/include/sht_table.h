@@ -3,6 +3,7 @@
 #include <record.h>
 #include <ht_table.h>
 
+#include <stdbool.h>
 typedef struct
 {
     char type_file;         // Store a character accordingly to the file's type, t-> hash, p->heap, s->sht

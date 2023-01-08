@@ -13,32 +13,31 @@ int HP_CreateFile(char *fileName)
   BF_Block *block;
   void *data;
 
-  BF_Block_Init(&block);                 /* Initialize block */
-  CALL_BF(BF_OpenFile(fileName, &fd1));  /* Open file */
-  CALL_BF(BF_AllocateBlock(fd1, block)); /* Allocate memory for new block */
-  data = BF_Block_GetData(block);
+  BF_Block_Init(&block);                                                /* Initialize block */
+  CALL_BF(BF_OpenFile(fileName, &fd1));                                 /* Open file */
+  CALL_BF(BF_AllocateBlock(fd1, block));                                /* Allocate memory for new block */
+  data = BF_Block_GetData(block);                                       /* Get a pointer in the beggining of the block */
   HP_info *info = data;                                                 /* First block allocated will have the information about the whole file */
   info->fileDesc = fd1;                                                 /* Store the file disc */
   info->max = (BF_BLOCK_SIZE - sizeof(HP_block_info)) / sizeof(Record); /* Calculate the number of the maximum Records each block can have */
   info->last_id = 0;                                                    /* Initialize with 0 */
   info->type_file = 'p';                                                /* Store the type of the file */
   BF_Block_SetDirty(block);                                             /* We made changes so set the block dirty */
-
-  CALL_BF(BF_UnpinBlock(block)); /* Unpin the block */
-  BF_Block_Destroy(&block);      /* Destroy the block as we no longer need it */
+  CALL_BF(BF_UnpinBlock(block));                                        /* Unpin the block */
+  BF_Block_Destroy(&block);                                             /* Destroy the block as we no longer need it */
   return BF_OK;
 }
 
 HP_info *HP_OpenFile(char *fileName)
 {
   int fd1;
-  BF_Block *block = NULL;
+  BF_Block *block;
   void *data;
 
   BF_Block_Init(&block);
 
   CALL_BF(BF_OpenFile(fileName, &fd1));
-  CALL_BF(BF_GetBlock(fd1, 0, block));
+  CALL_BF(BF_GetBlock(fd1, 0, block)); /* Get the first block of the file which contains the information for it */
   data = BF_Block_GetData(block);
   char *type_file = data;  /* The first character stored in the file represents the type of the file */
   if (type_file[0] != 'p') /* Check if the file opened is heap file */
@@ -107,25 +106,25 @@ int HP_GetAllEntries(HP_info *hp_info, int value)
 {
   BF_Block *block;
   void *data;
-  int block_num, counter = -1;
-  CALL_BF(BF_GetBlockCounter(hp_info->fileDesc, &block_num));
+  int block_num, counter = -1;                                /* Variable to store the number of blocks we had to traverse till we find all our records */
+  CALL_BF(BF_GetBlockCounter(hp_info->fileDesc, &block_num)); /* Get the number of blocks so that we traverse them all */
   BF_Block_Init(&block);
   for (int i = 1; i < block_num; i++)
-  {
-    CALL_BF(BF_GetBlock(hp_info->fileDesc, i, block));
+  {                                                    /* Traverse every block */
+    CALL_BF(BF_GetBlock(hp_info->fileDesc, i, block)); /* Get the blovk i */
     data = BF_Block_GetData(block);
     HP_block_info *blinfo = data + hp_info->max * sizeof(Record);
     for (int j = 0; j < blinfo->rec_num; j++)
-    {
+    { /* Traverse every record of the block i */
       Record *rec = data;
-      if (value == rec[j].id)
+      if (value == rec[j].id) /* If the rec[j] record is the one we are searching for print it (It may exist more than once so we dont stop searching) */
       {
         printRecord(rec[j]);
-        counter = i;
+        counter = i; /* Update the value of blocks traversed */
       }
     }
-    CALL_BF(BF_UnpinBlock(block));
+    CALL_BF(BF_UnpinBlock(block)); /* Unpin block as we no longer need it */
   }
   BF_Block_Destroy(&block);
-  return counter;
+  return counter; /* Return -1 if you dont find the id you are looking for or the number of blocks traversed till we found every record we needed */
 }

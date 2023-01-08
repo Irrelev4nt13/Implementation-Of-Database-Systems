@@ -41,11 +41,13 @@ int main()
   {
     record = randomRecord();
     int block_id = HT_InsertEntry(info, record);
+    if (strcmp(record.name, "Vagelis") == 0)
+      printRecord(record);
     SHT_SecondaryInsertEntry(index_info, record, block_id);
   }
   // Τυπώνουμε όλες τις εγγραφές με όνομα searchName
   printf("RUN PrintAllEntries for name %s\n", searchName);
-  SHT_SecondaryGetAllEntries(info, index_info, searchName);
+  printf("%d\n", SHT_SecondaryGetAllEntries(info, index_info, searchName));
   // Κλείνουμε το αρχείο κατακερματισμού και το δευτερεύον ευρετήριο
 
   SHT_CloseSecondaryIndex(index_info);

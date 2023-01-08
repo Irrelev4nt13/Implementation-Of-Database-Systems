@@ -20,7 +20,7 @@ stats:
 
 execute_hp: hp
 	make clean
-	./build/hp_main
+	valgrind ./build/hp_main
 execute_ht: ht
 	make clean
 	./build/ht_main
